@@ -104,3 +104,7 @@ if [ $(nvram get tracker_enable) = 1 ] ; then
 logger -t "自动启动" "正在更新tracker"
 /usr/bin/tracker.sh start
 fi
+if [ $(nvram get start_enable) = 1 ] ; then
+logger -t "自动启动" "正在启动start"
+/usr/bin/start.sh start
+fi
