@@ -2,7 +2,7 @@
 
 /usr/bin/aria.sh stop
 
-aria_config_file="/media/AiCard_01/aria/config/aria2.conf" #修改为你的aria2.conf的绝对地址
+aria_config_file="/tmp/aria/config/aria2.conf" #修改为你的aria2.conf的绝对地址
 
 list=`wget --no-check-certificate -q -O - https://cdn.jsdelivr.net/gh/XIU2/TrackersListCollection/best_aria2.txt|awk NF|sed ":a;N;s/\n/,/g;ta"`
 
