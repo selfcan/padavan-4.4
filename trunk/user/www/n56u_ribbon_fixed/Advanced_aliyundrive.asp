@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><#Web_Title#> - <#menu5_36#></title>
+<title><#Web_Title#> - Alist文件列表</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
@@ -42,13 +42,15 @@ $j(document).ready(function() {
 
 function initial(){
 	show_banner(2);
-	show_menu(5,18,0);
+	show_menu(5,22,0);
 	fill_status(aliyundrive_status());
 	show_footer();
-
 }
-
-
+function button_ald_port(){
+		var porturl ='http://' + window.location.hostname + ":" + "<% nvram_get_x("","ald_port"); %>";
+		//alert(porturl);
+		window.open(porturl,'ald_port');
+}
 function fill_status(status_code){
 	var stext = "Unknown";
 	if (status_code == 0)
@@ -57,17 +59,14 @@ function fill_status(status_code){
 		stext = "<#Running#>";
 	$("aliyundrive_status").innerHTML = '<span class="label label-' + (status_code != 0 ? 'success' : 'warning') + '">' + stext + '</span>';
 }
-
 function applyRule(){
-//	if(validForm()){
-		showLoading();
-		
-		document.form.action_mode.value = " Restart ";
-		document.form.current_page.value = "/Advanced_aliyundrive.asp";
-		document.form.next_page.value = "";
-		
-		document.form.submit();
-//	}
+	showLoading();
+	
+	document.form.action_mode.value = " Restart ";
+	document.form.current_page.value = "/Advanced_aliyundrive.asp";
+	document.form.next_page.value = "";
+	
+	document.form.submit();
 }
 
 function done_validating(action){
@@ -81,6 +80,8 @@ function done_validating(action){
 
 <body onload="initial();" onunLoad="return unload_body();">
 
+<div id="Loading" class="popup_bg"></div>
+
 <div class="wrapper">
 	<div class="container-fluid" style="padding-right: 0px">
 		<div class="row-fluid">
@@ -90,8 +91,6 @@ function done_validating(action){
 			</div>
 		</div>
 	</div>
-
-	<div id="Loading" class="popup_bg"></div>
 
 	<iframe name="hidden_frame" id="hidden_frame" src="" width="0" height="0" frameborder="0"></iframe>
 
@@ -126,20 +125,15 @@ function done_validating(action){
 				<div class="row-fluid">
 					<div class="span12">
 						<div class="box well grad_colour_dark_blue">
-							<h2 class="box_head round_top"><#menu5_36#></h2>
+							<h2 class="box_head round_top">Alist文件列表</h2>
 							<div class="round_bottom">
-							<div>
-                            <ul class="nav nav-tabs" style="margin-bottom: 10px;">
-								<li class="active">
-                                    <a href="Advanced_aliyundrive.asp">阿里云盘</a>
-                                </li>
-                            </ul>
-                        </div>
 								<div class="row-fluid">
 									<div id="tabMenu" class="submenuBlock"></div>
 									<div class="alert alert-info" style="margin: 10px;">
-									<p>阿里云盘 WebDAV<br>
-									</p>
+									<p>Alist 一个支持多种存储的文件列表程序，由 Gin 和 Solidjs 提供支持。
+									<p>项目地址：<a href="https://github.com/alist-org/alist" target="blank">https://github.com/alist-org/alist</a><p>
+                    注意：没有插USB存储设备的，在主页进行修改alist的设置过后，请手动在系统管理-控制台输入 aliyundrive-webdav.sh save  来保存配置文件，防止断电数据未保存。<p>
+如忘记密码可在控制台输入 aliyundrive-webdav.sh admin 重置密码 或 aliyundrive-webdav.sh set 新密码 修改为新密码
 									</div>
 
 
@@ -147,16 +141,16 @@ function done_validating(action){
 									<table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
 
 										<tr>
-											<th>refresh token</th>
+											<th>Alist WEB界面</th>
 											<td>
-				<input type="button" class="btn btn-success" value="点击查看获取 refresh token 的方法" onclick="window.open('https://github.com/messense/aliyundrive-webdav#%E8%8E%B7%E5%8F%96-refresh_token')" size="0">
+				<input type="button" class="btn btn-success" value="Alist主页" onclick="button_ald_port()" size="0">
 											</td>
 										</tr>
 										<tr> <th><#running_status#></th>
                                             <td id="aliyundrive_status" colspan="3"></td>
                                         </tr>
 										<tr>
-										<th width="30%" style="border-top: 0 none;">启用阿里云盘 WebDAV</th>
+										<th width="30%" style="border-top: 0 none;">启用Alist</th>
 											<td style="border-top: 0 none;">
 													<div class="main_itoggle">
 													<div id="aliyundrive_enable_on_of">
@@ -170,86 +164,9 @@ function done_validating(action){
 											</td>
 
 										</tr>
-
-										<tr>
-										<th>Refresh Token</th>
-				<td>
-					<input type="text" class="input" name="ald_refresh_token" id="ald_refresh_token" style="width: 200px" value="<% nvram_get_x("","ald_refresh_token"); %>" />
-				</td>
-
-										</tr>
-										<tr>
-										<th>云盘根目录</th>
-				<td>
-					<input type="text" class="input" name="ald_root" id="ald_root" style="width: 200px" value="<% nvram_get_x("","ald_root"); %>" />
-				</td>
-
-										</tr>
-										<tr>
-										<th>监听主机</th>
-				<td>
-					<input type="text" class="input" name="ald_host" id="ald_host" style="width: 200px" value="<% nvram_get_x("","ald_host"); %>" />
-				</td>
-
-										</tr>
-										<tr>
-										<th>监听端口</th>
-				<td>
-					<input type="text" class="input" name="ald_port" id="ald_port" style="width: 200px" value="<% nvram_get_x("","ald_port"); %>" />
-				</td>
-
-										</tr>
-										<tr>
-										<th>用户名</th>
-				<td>
-					<input type="text" class="input" name="ald_auth_user" id="ald_auth_user" style="width: 200px" value="<% nvram_get_x("","ald_auth_user"); %>" />
-				</td>
-
-										</tr>
-										<tr>
-										<th>密码</th>
-				<td>
-					<input type="text" class="input" name="ald_auth_password" id="ald_auth_password" style="width: 200px" value="<% nvram_get_x("","ald_auth_password"); %>" />
-				</td>
-
-										</tr>
-										<tr>
-										<th>下载缓冲大小(bytes)</th>
-				<td>
-					<input type="text" class="input" name="ald_read_buffer_size" id="ald_read_buffer_size" style="width: 200px" value="<% nvram_get_x("","ald_read_buffer_size"); %>" />
-				</td>
-
-										</tr>
-										<tr>
-										<th>目录缓存大小</th>
-				<td>
-					<input type="text" class="input" name="ald_cache_size" id="ald_cache_size" style="width: 200px" value="<% nvram_get_x("","ald_cache_size"); %>" />
-				</td>
-
-										</tr>
-										<tr>
-										<th>目录缓存过期时间（单位为秒）</th>
-				<td>
-					<input type="text" class="input" name="ald_cache_ttl" id="ald_cache_ttl" style="width: 200px" value="<% nvram_get_x("","ald_cache_ttl"); %>" />
-				</td>
-				<tr>
-										<th width="30%" style="border-top: 0 none;">禁止上传、修改和删除文件操作</th>
-											<td style="border-top: 0 none;">
-													<div class="main_itoggle">
-													<div id="ald_no_trash_on_of">
-														<input type="checkbox" id="ald_no_trash_fake" <% nvram_match_x("", "ald_no_trash", "1", "value=1 checked"); %><% nvram_match_x("", "ald_no_trash", "0", "value=0"); %>  />
-													</div>
-												</div>
-												<div style="position: absolute; margin-left: -10000px;">
-													<input type="radio" value="1" name="ald_no_trash" id="ald_no_trash_1" class="input" value="1" <% nvram_match_x("", "ald_no_trash", "1", "checked"); %> /><#checkbox_Yes#>
-													<input type="radio" value="0" name="ald_no_trash" id="ald_no_trash_0" class="input" value="0" <% nvram_match_x("", "ald_no_trash", "0", "checked"); %> /><#checkbox_No#>
-												</div>
-											</td>
-
-										</tr>
-										<tr>
-										<th width="30%" style="border-top: 0 none;">启用只读模式</th>
-											<td style="border-top: 0 none;">
+<tr>
+										<th width="30%">自动更新版本</th>
+											<td>
 													<div class="main_itoggle">
 													<div id="ald_read_only_on_of">
 														<input type="checkbox" id="ald_read_only_fake" <% nvram_match_x("", "ald_read_only", "1", "value=1 checked"); %><% nvram_match_x("", "ald_read_only", "0", "value=0"); %>  />
@@ -260,23 +177,75 @@ function done_validating(action){
 													<input type="radio" value="0" name="ald_read_only" id="ald_read_only_0" class="input" value="0" <% nvram_match_x("", "ald_read_only", "0", "checked"); %> /><#checkbox_No#>
 												</div>
 											</td>
-
-										</tr><!--
+										</tr>
 										<tr>
-										<th width="30%" style="border-top: 0 none;">阿里云相册与云盘服务 domainId</th>
-											<td style="border-top: 0 none;">
-													<div class="main_itoggle">
-													<div id="ald_domain_id_on_of">
-														<input type="checkbox" id="ald_domain_id_fake" <% nvram_match_x("", "ald_domain_id", "1", "value=1 checked"); %><% nvram_match_x("", "ald_domain_id", "0", "value=0"); %>  />
-													</div>
-												</div>
-												<div style="position: absolute; margin-left: -10000px;">
-													<input type="radio" value="1" name="ald_domain_id" id="ald_domain_id_1" class="input" value="1" <% nvram_match_x("", "ald_domain_id", "1", "checked"); %> /><#checkbox_Yes#>
-													<input type="radio" value="0" name="ald_domain_id" id="ald_domain_id_0" class="input" value="0" <% nvram_match_x("", "ald_domain_id", "0", "checked"); %> /><#checkbox_No#>
-												</div>
-											</td>
+										<th>CDN服务器</th>
+				<td>
+					<input type="text" class="input" name="ald_refresh_token" id="ald_refresh_token" style="width: 200px" value="<% nvram_get_x("","ald_refresh_token"); %>" />
+				</td>
 
-										</tr>-->
+										</tr>
+										<tr>
+										<th>用户登录过期时间</th>
+				<td>
+					<input type="text" class="input" name="ald_root" id="ald_root" style="width: 200px" value="<% nvram_get_x("","ald_root"); %>" />单位/小时
+				</td>
+
+										</tr>
+										<tr>
+										<th>https访问端口</th>
+				<td>
+					<input type="text" class="input" name="ald_host" id="ald_host" style="width: 200px" value="<% nvram_get_x("","ald_host"); %>" />
+				</td>
+
+										</tr>
+										<tr>
+										<th>http主页访问端口</th>
+				<td>
+					<input type="text" class="input" name="ald_port" id="ald_port" style="width: 200px" value="<% nvram_get_x("","ald_port"); %>" />
+				</td>
+
+										</tr>
+										<tr>
+										<th>数据库存放路径</th>
+				<td>
+					<input type="text" class="input" name="ald_auth_user" id="ald_auth_user" style="width: 200px" value="<% nvram_get_x("","ald_auth_user"); %>" />
+				</td>
+
+										</tr>
+										<tr>
+										<th>临时文件存放路径</th>
+				<td>
+					<input type="text" class="input" name="ald_auth_password" id="ald_auth_password" style="width: 200px" value="<% nvram_get_x("","ald_auth_password"); %>" />
+				</td>
+
+										</tr>
+										<tr>
+										<th>bleve 索引数据路径</th>
+				<td>
+					<input type="text" class="input" name="ald_read_buffer_size" id="ald_read_buffer_size" style="width: 200px" value="<% nvram_get_x("","ald_read_buffer_size"); %>" />
+				</td>
+
+										</tr>
+										<tr>
+										<th>程序日志开关</th>
+				<td>
+					<input type="text" class="input" name="ald_cache_size" id="ald_cache_size" style="width: 200px" value="<% nvram_get_x("","ald_cache_size"); %>" />关闭: false 开启: true
+				</td>
+
+										</tr>
+										<tr>
+										<th>程序日志路径</th>
+				<td>
+					<input type="text" class="input" name="ald_cache_ttl" id="ald_cache_ttl" style="width: 200px" value="<% nvram_get_x("","ald_cache_ttl"); %>" />
+				</td>
+				<tr>
+										<th >访问地址</th>
+<td>
+<input type="text" class="input" name="ald_domain_id" id="ald_domain_id" style="width: 200px" value="<% nvram_get_x("","ald_domain_id"); %>" />
+				</td>
+				<tr>
+
 										<tr>
 											<td colspan="4" style="border-top: 0 none;">
 												<br />
@@ -301,4 +270,3 @@ function done_validating(action){
 </div>
 </body>
 </html>
-
